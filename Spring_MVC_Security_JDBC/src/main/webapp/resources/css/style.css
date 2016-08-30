@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: url(../img/wallpaper.jpg) fixed center;
+}
+
+form {
+	width: 400px;
+	margin: auto;
+}
+
+input {
+	padding: 8px;
+	border-radius: 5px;
+	font-family: "Courier New";
+	font-size: 1.2rem;
+	margin-bottom: 2px;
+	margin-top: 5px;
+	display: block;
+	width: 100%;
+	background: transparent;
+	color: #fff;
+}
+
+input[type="submit"] {
+	cursor: pointer;
+	transition: all .8s;
+}
+
+input[type="submit"]:hover {
+	background-color: green;
+}
+
+.table {
+	display: table;
+	table-layout: fixed;
+	width: 80%;
+	margin: auto;
+	font-family: sans-serif;
+	color: #fff;
+}
+
+.table > div {
+	display: table-row;
+}
+
+.table > div > div {
+	display: table-cell;
+	padding: 8px
+} 
+
+.table > div > div:nth-child(1) {
+	width: 100px;
+	color: rgba(255, 255, 150, .9);
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.table > div > div:nth-child(1):hover {
+	text-decoration: underline;
+}
+
+.table > div > div:nth-child(2) {
+	width: 100px;
+}
+
+.table > div > div:nth-child(4) {
+	width: 210px;
+}
+
+.table > div:nth-child(odd) {
+	background: rgba(0, 0, 255, .2);
+}
+
+.table > div:nth-child(even) {
+	background: rgba(0, 255, 0, .2);
+}

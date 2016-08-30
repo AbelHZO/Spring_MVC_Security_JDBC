@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.abelhzo.spring.beans.Roles;
 import com.abelhzo.spring.beans.Usuarios;
+import com.abelhzo.spring.utils.Crypto;
 
 @Repository
 public class UsuariosDAO implements UsuariosService {
@@ -28,8 +29,10 @@ public class UsuariosDAO implements UsuariosService {
 	@Override
 	public int saveUser(Usuarios user) {
 		String sql = "INSERT INTO Usuarios(idUser, usuario, password, email) VALUES(UNIX_TIMESTAMP(), :user, :pass, :email);";
-		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("user", user.getUsuario())
-				.addValue("pass", user.getPassword()).addValue("email", user.getEmail());
+		SqlParameterSource namedParameters = new MapSqlParameterSource()
+				.addValue("user", user.getUsuario())
+				.addValue("pass", Crypto.BCryto(user.getPassword()))
+				.addValue("email", user.getEmail());
 
 		return parameterJdbcTemplate.update(sql, namedParameters);
 	}
@@ -37,8 +40,10 @@ public class UsuariosDAO implements UsuariosService {
 	@Override
 	public int updateUser(Usuarios user) {
 		String sql = "UPDATE Usuarios SET usuario = :user, password = :pass, email = :email WHERE idUser = :id;";
-		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("user", user.getUsuario())
-				.addValue("pass", user.getPassword()).addValue("email", user.getEmail())
+		SqlParameterSource namedParameters = new MapSqlParameterSource()
+				.addValue("user", user.getUsuario())
+				.addValue("pass", Crypto.BCryto(user.getPassword()))
+				.addValue("email", user.getEmail())
 				.addValue("id", user.getIdUser());
 
 		return parameterJdbcTemplate.update(sql, namedParameters);

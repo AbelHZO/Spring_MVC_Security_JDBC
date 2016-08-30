@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,11 +28,15 @@ public class UsuariosDetailServiceImpl implements UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		Usuarios user = dao.getUserByName(username);
+		Usuarios user = null;
+		
+		try {
+			user = dao.getUserByName(username);
+		} catch (EmptyResultDataAccessException e) {
+			throw new UsernameNotFoundException("Usuario no Encontrado.");
+		}
 		
 		if(user != null) {
-			
-			System.out.println(user.getRoles());
 	
 			boolean enabled = Boolean.TRUE;
 			boolean accountNonExpired = Boolean.TRUE;
@@ -40,7 +45,6 @@ public class UsuariosDetailServiceImpl implements UserDetailsService {
 	
 			Collection<GrantedAuthority> authorities = new ArrayList<>();
 	
-			System.out.println(user.getUsuario());
 			for (Roles rol : user.getRoles()) {
 				authorities.add(new SimpleGrantedAuthority(rol.getRol()));
 			}
@@ -57,7 +61,7 @@ public class UsuariosDetailServiceImpl implements UserDetailsService {
 			
 		} else {
 			
-			throw new UsernameNotFoundException("Usuario no Encontrado.");
+			throw new UsernameNotFoundException("Password Invalido.");
 			
 		}
 

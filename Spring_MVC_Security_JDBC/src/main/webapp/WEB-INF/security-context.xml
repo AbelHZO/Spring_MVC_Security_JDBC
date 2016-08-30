@@ -7,7 +7,8 @@
 	<import resource="spring-servlet.xml"/>
 
 	<security:http auto-config="true" use-expressions="true">
-		<security:intercept-url pattern="/abelhzo/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
+		<security:intercept-url pattern="/abelhzo/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"/>
+		<security:intercept-url pattern="/resources/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"/>
 		<security:logout invalidate-session="true" logout-success-url="/login" logout-url="/j_spring_security_logout" />
 		<security:csrf />
 	</security:http>
