@@ -42,7 +42,7 @@ public class UsuarioController {
 		return "{\"status\":\"" + dao.updateUser(usuario) + "\"}";
 	}
 
-	@RequestMapping(value = "/abelhzo/getuser", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/abelhzo/getuser/{id}", method = RequestMethod.POST, produces = "application/json")
 	private @ResponseBody String getUser(@PathVariable("id") String id) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(dao.getUser(id));

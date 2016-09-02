@@ -51,7 +51,7 @@ public class UsuariosDAO implements UsuariosService {
 
 	@Override
 	public Usuarios getUser(String id) {
-		String sql = "SELECT r.* FROM User_Roles ur, Roles r WHERE r.idRol = ur.idUser AND idUser = ?;";
+		String sql = "SELECT * FROM Usuarios WHERE idUser = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[] { id }, new UsuariosMapper());
 	}
 

@@ -80,3 +80,33 @@ input[type="submit"]:hover {
 .table > div:nth-child(even) {
 	background: rgba(0, 255, 0, .2);
 }
+
+.modalForm {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .7);
+	display: none;
+}
+
+.modalForm > div {
+	width: 400px;
+	margin: auto;
+	background: url(../img/wallpaper.jpg) fixed center;
+}
+
+.modalForm > span {
+	position: absolute;
+	top: 30px;
+	left: 100px;
+	font-family: cursive;
+	color: #fff;
+	font-size: 1.2rem;
+	cursor: pointer;
+}
+
+.modalForm > span:hover {
+	color: red;
+}

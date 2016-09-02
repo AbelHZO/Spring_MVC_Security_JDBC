@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js" ></script>
+<script type="text/javascript" src=""></script>
 <link href="<c:url value="../resources/css/style.css" />" rel="stylesheet" type="text/css" />
 <title>Insert title here</title>
 </head>
@@ -31,8 +32,34 @@
 			</div>
 		</div>
 	</section>
+	
+	<div class="modalForm">
+		<span>Cerrar x</span>	
+		<div>
+			<form ng-submit="updateUser()" method="post">
+				<input type="hidden" ng-model="usuario.idUser">
+				<input type="text" ng-model="usuario.usuario" placeholder="Usuario">
+				<input type="password" ng-model="usuario.password" placeholder="Password">
+				<input type="email" ng-model="usuario.email" placeholder="Email">
+				<input type="submit" value="Modificar">
+			</form>
+		</div>
+	</div>
+	
+	<div id="error"></div>
 <script type="text/javascript">
 "use strict"
+
+var visible = false;
+var modal = document.getElementsByClassName("modalForm")[0];
+modal.addEventListener("click", function(evt) {
+	if(visible) {
+		$(".modalForm > span").css("display", "block");
+	} else {
+		this.style.display = 'none';
+	}
+	visible = !visible;
+});
 
 angular.module("usersapp", []).service("serviceusers", [ "$http", function(h) {
 
@@ -41,38 +68,59 @@ angular.module("usersapp", []).service("serviceusers", [ "$http", function(h) {
 	headers["X-CSRF-TOKEN"] = '${_csrf.token}';
 	headers["${_csrf.parameterName}"] = '${_csrf.token}';
 	headers["Content-Type"] = 'application/json; charset=utf-8';
-
-	this.listUsers = function() {
-		var json = {
-			method : 'GET',
-			url : "${pageContext.request.contextPath}/abelhzo/listuser",
-			headers : headers
-		}
-		return h(json);
-	}
 	
 	this.saveUser = function(user) {
 		var json = {
 			method: 'POST',
-			url : "${pageContext.request.contextPath}/abelhzo/saveuser",
+			url: '${pageContext.request.contextPath}/abelhzo/saveuser',
 			headers : headers,
 			data: user
-		}
+		};
 		
 		return h(json);
 	}
+	
+	this.updateUser = function(user) {
+		var json = {
+			meyhod: 'POST',
+			url: '${pageContext.request.contextPath}/abelhzo/updateuser',
+			headers: headers,
+			data: user
+		};
+		
+		return h(json);
+	}
+	
+	this.getUser = function(id) {
+		var json = {
+			method: 'POST',	
+			url: '${pageContext.request.contextPath}/abelhzo/getuser/' + id,
+			headers: headers
+		};
+		
+		return h(json);
+	}
+	
+	this.listUsers = function() {
+		var json = {
+			method : 'GET',
+			url : '${pageContext.request.contextPath}/abelhzo/listuser',
+			headers : headers
+		};
+		
+		return h(json);
+	}	
 
 } ]).controller("controlusers", [ "$scope", "serviceusers", function(sco, ser) {
 	
 	sco.saveUser = function() {
-
 		ser.saveUser(sco.usuario).
 		success(function(data) {
 			sco.listUsers();
 			sco.usuario = {};
 		}).
 		error(function(error) {
-			alert(error);
+			document.getElementById("error").innerHTML = error;
 		});
 	}
 	
@@ -80,12 +128,30 @@ angular.module("usersapp", []).service("serviceusers", [ "$http", function(h) {
 		ser.listUsers().success(function(data) {
 			sco.listausurio = data;
 		}).error(function(error) {
-			alert(error);
+			document.getElementById("error").innerHTML = error;
 		});
 	}
 	
 	sco.getUser = function(user) {
-		alert(user.password);
+		ser.getUser(user.idUser).
+		success(function(data) {
+			modal.style.display = "block";
+			sco.usuario = data;
+		}).
+		error(function(error) {
+			document.getElementById("error").innerHTML = error;
+		});
+	}
+	
+	sco.updateUser = function() {
+		ser.updateUser(sco.usuario).
+		success(function(data) {
+			sco.listUsers();
+			sco.usuario = {};
+		}).
+		error(function(error) {
+			document.getElementById("error").innerHTML = error;
+		});
 	}
 	
 } ]);
